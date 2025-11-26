@@ -16,7 +16,7 @@ from decouple import config
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-SECRET_KEY = config('SECRET_KEY', default='una-clave-secreta-de-desarrollo-solo-si-no-hay-env')
+SECRET_KEY = config('SECRET_KEY', default='bQfMB2FvevTASDgFpspJVVVY97BCIyxM2Wh8dP9XblWAS5VTPc')
 DEBUG = config('DEBUG', default=True, cast=bool) 
 
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='127.0.0.1,localhost').split(',')
@@ -34,6 +34,9 @@ INSTALLED_APPS = [
 ]
 
 
+ROOT_URLCONF = 'examen_parcial.urls' 
+
+
 
 LANGUAGE_CODE = 'es-ar'
 TIME_ZONE = 'America/Argentina/Buenos_Aires'
@@ -46,7 +49,7 @@ STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'static_root' 
 
 STATICFILES_DIRS = [
-    
+   
 ]
 
 
