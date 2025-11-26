@@ -1,0 +1,1 @@
+web: gunicorn examen_parcial.wsgi

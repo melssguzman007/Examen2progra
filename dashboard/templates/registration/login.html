@@ -1,0 +1,45 @@
+{% extends "dashboard/base.html" %}
+
+{% block title %}Iniciar Sesión{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-6">
+        <div class="card p-4">
+            <h2 class="card-title text-center text-primary">Iniciar Sesión</h2>
+            <hr>
+
+            {% if form.errors %}
+                <div class="alert alert-danger" role="alert">
+                    Tu nombre de usuario o contraseña no coinciden. Por favor, intenta de nuevo.
+                </div>
+            {% endif %}
+
+            <form method="post" action="{% url 'login' %}">
+                {% csrf_token %}
+                
+                <div class="mb-3">
+                    <label for="{{ form.username.id_for_label }}" class="form-label">Nombre de Usuario</label>
+                    <input type="text" name="{{ form.username.name }}" id="{{ form.username.id_for_label }}" class="form-control" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="{{ form.password.id_for_label }}" class="form-label">Contraseña</label>
+                    <input type="password" name="{{ form.password.name }}" id="{{ form.password.id_for_label }}" class="form-control" required>
+                </div>
+
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-success mt-3">Ingresar</button>
+                </div>
+                
+                <!-- Redireccionar a la página de donde vino el usuario -->
+                <input type="hidden" name="next" value="{{ next }}" />
+            </form>
+            
+            <p class="text-center mt-3">
+                ¿No tienes cuenta? <a href="{% url 'dashboard:registro' %}">Regístrate aquí</a>
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}
