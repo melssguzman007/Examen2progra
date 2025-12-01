@@ -1,4 +1,4 @@
-{% extends "dashboard/base.html" %}
+{% extends "base.html" %}
 
 {% block title %}Dashboard de Alumnos{% endblock %}
 
@@ -6,32 +6,6 @@
 <div class="row">
     <h1 class="text-center mb-4 text-secondary">Panel de Control de Alumnos</h1>
     
-    {% if mensaje_exito %}
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            {{ mensaje_exito }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    {% endif %}
-    {% if mensaje_error %}
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            {{ mensaje_error }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    {% endif %}
-    {% if request.GET.success_message %}
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            {{ request.GET.success_message }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    {% endif %}
-    {% if request.GET.error_message %}
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            {{ request.GET.error_message }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    {% endif %}
-
-    <!-- Columna de Formulario de Creación -->
     <div class="col-lg-4 mb-4">
         <div class="card p-4 bg-white">
             <h3 class="card-title text-primary">Crear Nuevo Alumno</h3>
@@ -40,7 +14,7 @@
                 {% for field in form %}
                     <div class="mb-3">
                         <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
-                        <input type="{{ field.field.widget.input_type }}" name="{{ field.name }}" id="{{ field.id_for_label }}" class="form-control" value="{{ field.value|default:'' }}">
+                        {{ field }} 
                         {% if field.errors %}
                             {% for error in field.errors %}
                                 <div class="text-danger small">{{ error }}</div>
@@ -53,7 +27,6 @@
         </div>
     </div>
 
-    <!-- Columna de Listado de Alumnos -->
     <div class="col-lg-8">
         <div class="card p-4 bg-white">
             <h3 class="card-title text-secondary">Mis Alumnos Creados ({{ alumnos|length }})</h3>
@@ -61,11 +34,11 @@
                 <table class="table table-striped table-hover align-middle">
                     <thead class="table-dark">
                         <tr>
-                            <th>Nombre</th>
+                            <th>Nombre Completo</th>
                             <th>Legajo</th>
                             <th>Carrera</th>
-                            <th>Nota</th>
-                            <th>Acciones</th>
+                            <th>DNI</th>           <th>Teléfono</th>     <th>Nota Final</th>
+                            <th style="min-width: 250px;">Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -74,18 +47,24 @@
                             <td>{{ alumno.nombre_completo }}</td>
                             <td>{{ alumno.legajo }}</td>
                             <td>{{ alumno.carrera }}</td>
-                            <td><span class="badge bg-{% if alumno.nota_final >= 6 %}success{% else %}danger{% endif %}">{{ alumno.nota_final }}</span></td>
-                            <td>
-                                <!-- 3. Botón Enviar PDF por Correo -->
-                                <a href="{% url 'dashboard:enviar_pdf' alumno.id %}" class="btn btn-sm btn-info text-white" 
-                                    onclick="return confirm('¿Está seguro de enviar el PDF por correo? Esto puede tomar unos segundos.')">
+                            <td>{{ alumno.dni }}</td>       <td>{{ alumno.telefono }}</td>  <td><span class="badge bg-{% if alumno.nota_final >= 6 %}success{% else %}danger{% endif %}">{{ alumno.nota_final }}</span></td>
+                            
+                            <td style="min-width: 250px;">
+                                <a href="{% url 'dashboard:alumno_editar' alumno.pk %}" class="btn btn-sm btn-warning">
+                                    <i class="fas fa-edit"></i> Editar
+                                </a>
+                                <a href="{% url 'dashboard:alumno_eliminar' alumno.pk %}" class="btn btn-sm btn-danger" 
+                                    onclick="return confirm('¿Está seguro de eliminar a {{ alumno.nombre_completo }}?')">
+                                    <i class="fas fa-trash"></i> Eliminar
+                                </a>
+                                <a href="{% url 'dashboard:enviar_pdf' alumno.id %}" class="btn btn-sm btn-info text-white">
                                     Enviar PDF ✉️
                                 </a>
                             </td>
                         </tr>
                         {% empty %}
                         <tr>
-                            <td colspan="5" class="text-center text-muted">Aún no has creado ningún alumno.</td>
+                            <td colspan="7" class="text-center text-muted">Aún no has creado ningún alumno.</td>
                         </tr>
                         {% endfor %}
                     </tbody>

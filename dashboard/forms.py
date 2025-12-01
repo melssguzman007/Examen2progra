@@ -3,27 +3,23 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from .models import Alumno
 
-# 1. Formulario de registro común
 class RegistroForm(UserCreationForm):
-    # Añadimos email al formulario de registro
     email = forms.EmailField(
         label="Correo Electrónico",
-        # Aplicamos la clase form-control directamente al widget
-        widget=forms.EmailInput(attrs={'class': 'form-control'}) 
+        widget=forms.EmailInput(attrs={'class': 'form-control', 'required': True}) 
     )
     
     class Meta:
         model = User
-        fields = ("username", "email") # Campos a mostrar
+        # 🟢 CORRECCIÓN: Usar los campos por defecto más el email 🟢
+        fields = ("username", "email", "password2") # Agregamos password2 (password1 y password2 son automáticos)
         
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        # FIX: Usamos 'password1' y 'password2' (los nombres correctos de UserCreationForm)
-        # Aplicamos la clase form-control a los campos restantes
-        fields_to_style = ['username', 'password1', 'password2'] 
+        # Aquí eliminamos los campos password del loop de estilización para no duplicar el error
+        fields_to_style = ['username', 'email', 'password2'] # 🟢 CORREGIR 🟢
         
         for field_name in fields_to_style:
-            # Es importante verificar que el campo exista
             if field_name in self.fields:
                 self.fields[field_name].widget.attrs['class'] = 'form-control'
             
@@ -34,12 +30,17 @@ class RegistroForm(UserCreationForm):
             user.save()
         return user
 
+# dashboard/forms.py
+
+# ... (Clase RegistroForm, que ya parece estar bien) ...
+
 # Formulario para crear/editar Alumno
 class AlumnoForm(forms.ModelForm):
     class Meta:
         model = Alumno
-        fields = ['nombre_completo', 'legajo', 'carrera', 'nota_final']
-
+        # 🟢 CORRECCIÓN: Usar la nomenclatura de Python (minúsculas sin acentos) 🟢
+        fields = ['dni', 'nombre_completo', 'legajo', 'carrera', 'telefono', 'nota_final']
+        
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         # Aplicamos la clase form-control a todos los campos de AlumnoForm

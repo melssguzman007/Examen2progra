@@ -1,0 +1,50 @@
+{% extends "dashboard/base.html" %}
+
+{% block title %}Editar Alumno{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-6">
+        <div class="card p-4 bg-white">
+            <h3 class="card-title text-center text-warning">
+                Modificar Alumno: {{ alumno.nombre_completo }}
+            </h3>
+            <hr>
+            
+            {% if form.non_field_errors %}
+                <div class="alert alert-danger" role="alert">
+                    {% for error in form.non_field_errors %}
+                        {{ error }}
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <form method="post" action="{% url 'dashboard:alumno_editar' alumno.pk %}">
+                {% csrf_token %}
+                
+                {% for field in form %}
+                    <div class="mb-3">
+                        <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                        
+                        {{ field }} 
+
+                        {% if field.errors %}
+                            {% for error in field.errors %}
+                                <div class="text-danger small">{{ error }}</div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                {% endfor %}
+
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-warning mt-3">Guardar Cambios</button>
+                </div>
+            </form>
+            
+            <p class="text-center mt-3">
+                <a href="{% url 'dashboard:dashboard' %}">Volver al Dashboard</a>
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}

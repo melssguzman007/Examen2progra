@@ -16,12 +16,16 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('accounts/', include('django.contrib.auth.urls')), 
+    
+    # 🟢 1. AUTENTICACIÓN: Usamos las rutas específicas para login/logout 🟢
+   path('login/', auth_views.LoginView.as_view(template_name='dashboard/login.html'), name='login'),
+    path('logout/', auth_views.LogoutView.as_view(next_page='/'), name='logout'), # Agregamos next_page para asegurar la redirección
 
-    # Mis apps
-    path('', include('dashboard.urls')), 
-    path('scraper/', include('scraper.urls')),
+    #  APPS PRINCIPALES CREADAS X MI 
+    path('', include('dashboard.urls' , namespace='dashboard')), 
+    path('scraper/', include('scraper.urls' , namespace='scraper' )),
 ]
