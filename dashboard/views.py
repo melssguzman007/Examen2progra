@@ -21,19 +21,20 @@ def registro_view(request):
         if form.is_valid():
             user = form.save()
             
-            try:
-                send_mail(
-                    '¡Bienvenido a nuestro sistema!',
-                    f'Hola {user.username},\n\nGracias por registrarte en el sistema del examen parcial.',
-                    settings.DEFAULT_FROM_EMAIL,
-                    [user.email],
-                    fail_silently=True,
-                )
-            except Exception as e:
-                print(f"Error al enviar correo de bienvenida: {e}")
+          #  try:
+               #   send_mail(
+                 #     '¡Bienvenido a nuestro sistema!',
+                   #   f'Hola {user.username},\n\nGracias por registrarte en el sistema del examen parcial.',
+                    #  settings.DEFAULT_FROM_EMAIL,
+                    #  [user.email],
+                    #  fail_silently=True,
+                #  )
+          #  except Exception as e:
+             #     print(f"Error al enviar correo de bienvenida: {e}")
+              
                 
-            login(request, user) 
-            return redirect('dashboard:dashboard')
+            #  login(request, user) 
+            #  return redirect('dashboard:dashboard')
     else:
         form = RegistroForm()
     
