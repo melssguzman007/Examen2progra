@@ -27,7 +27,7 @@ def registro_view(request):
                     f'Hola {user.username},\n\nGracias por registrarte en el sistema del examen parcial.',
                     settings.DEFAULT_FROM_EMAIL,
                     [user.email],
-                    fail_silently=False,
+                    fail_silently=True,
                 )
             except Exception as e:
                 print(f"Error al enviar correo de bienvenida: {e}")

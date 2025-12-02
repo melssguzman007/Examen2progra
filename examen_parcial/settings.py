@@ -92,10 +92,9 @@ STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles' 
 
 STATICFILES_DIRS = [
-    BASE_DIR / 'static', # Agrega tu carpeta 'static' raíz si existe
+    BASE_DIR / 'static', 
 ]
 
-# 🟢 MODIFICACIÓN: Usar WhiteNoise para servir archivos estáticos comprimidos
 STORAGES = {
     "default": {
         "BACKEND": "django.core.files.storage.FileSystemStorage",
@@ -105,9 +104,6 @@ STORAGES = {
     },
 }
 
-# -----------------------------------------------
-#              EMAIL Y AUTENTICACIÓN
-# -----------------------------------------------
 
 EMAIL_HOST = config('EMAIL_HOST')
 EMAIL_PORT = config('EMAIL_PORT', cast=int)
@@ -117,15 +113,15 @@ EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL')
 
 
-# CONFIGURACIÓN DE CORREO
+
 if DEBUG:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 else:
-    # 🟢 Usamos la configuración SMTP REAL en producción
+  
     EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 
-# REDIRECCIONES DE AUTENTICACIÓN
+
 LOGIN_URL = 'login' 
 LOGIN_REDIRECT_URL = 'dashboard:dashboard'
 LOGOUT_REDIRECT_URL = 'login' 
